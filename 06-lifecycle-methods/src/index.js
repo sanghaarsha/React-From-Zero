@@ -46,3 +46,19 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
+
+// Why lifecycle methods ?
+
+// 1. Constructor -> *Do one time setup (initialize state, oustside API call for data [like geolocation API here] ,etc..)*
+
+// 2. render -> *Return JSX, it's the only thing it does!*
+
+// 3. componentDidMount -> *Initial data loading for component, if it needs to be done just one time, as componentDidMount just runs one time!*
+
+// NOTE: -- Notice how constructor and componentDidMount have similar use-case? It's true one can be used in place of another but it's best to use componentDidMount for inital data loading for components --
+
+// 4. componentDidUpdade -> *Load more data when state/props change, send data requests every time component is updated*
+
+// 5. componentWillUnmount -> *Clean up after a component is removed from DOM*
+
+// there are more lifecycle methods but less used...
