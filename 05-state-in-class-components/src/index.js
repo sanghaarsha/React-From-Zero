@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Season from "./Season";
 
 // Rules of state :
 // Only useable with class components (...hooks lets us use state in functional components)
@@ -9,7 +8,7 @@ import Season from "./Season";
 // State must be initialized when a component is created
 // State can only be updated using function setState
 
-//
+// Creating Compnent :
 // Our App component is sub-classing React.Component class
 // that means we are borrowing features from that class
 class App extends React.Component {
@@ -23,7 +22,7 @@ class App extends React.Component {
 
         // initialize the state object
         // this is the ONLY TIME we direct assign to this.state
-        this.state = { lat: null };
+        this.state = { lat: null, errorMessage: "" };
 
         // get position
         window.navigator.geolocation.getCurrentPosition(
@@ -32,21 +31,20 @@ class App extends React.Component {
                 this.setState({ lat: pos.coords.latitude });
             },
             (err) => {
-                console.log(err);
+                this.setState({ errorMessage: err.message });
             }
         );
     }
 
     // React says each component requires "render" method !!
     render() {
-        return (
-            <div>
-                <Season />
-                <div>
-                    <h1> Latitide : {this.state.lat} </h1>
-                </div>
-            </div>
-        );
+        if (this.state.errorMessage && !this.state.lat) {
+            return <h1> Error : {this.state.errorMessage} </h1>;
+        } else if (!this.state.errorMessage && this.state.lat) {
+            return <h1> Latitide : {this.state.lat} </h1>;
+        } else {
+            return <h1>loading...</h1>;
+        }
     }
 }
 
