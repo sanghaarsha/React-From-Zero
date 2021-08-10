@@ -13,7 +13,8 @@ class App extends React.Component {
         );
     }
 
-    render() {
+    // creating a helper function for render method
+    renderContent() {
         if (this.state.errorMessage && !this.state.lat) {
             return <h1> Error : {this.state.errorMessage} </h1>;
         }
@@ -23,6 +24,11 @@ class App extends React.Component {
         }
 
         return <Spinner message="Please accept location request!" />;
+    }
+
+    // main reason of creating a helper function is to avoid multiple return statements inside render method!
+    render() {
+        return <div>{this.renderContent()}</div>;
     }
 }
 
