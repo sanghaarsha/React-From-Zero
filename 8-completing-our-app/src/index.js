@@ -16,11 +16,13 @@ class App extends React.Component {
     render() {
         if (this.state.errorMessage && !this.state.lat) {
             return <h1> Error : {this.state.errorMessage} </h1>;
-        } else if (!this.state.errorMessage && this.state.lat) {
-            return <Season lat={this.state.lat} />;
-        } else {
-            return <Spinner />;
         }
+
+        if (!this.state.errorMessage && this.state.lat) {
+            return <Season lat={this.state.lat} />;
+        }
+
+        return <Spinner message="Please accept location request!" />;
     }
 }
 
