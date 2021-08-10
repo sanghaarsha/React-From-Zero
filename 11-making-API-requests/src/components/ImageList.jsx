@@ -4,7 +4,7 @@ class ImageList extends React.Component {
     render() {
         return (
             <>
-                <h1>Images</h1>
+                <h1>Found : {this.props.images.length}</h1>
             </>
         );
     }
