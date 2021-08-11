@@ -1,11 +1,8 @@
 import React from "react";
 
-const VideoItem = () => {
-    return (
-        <div>
-            <h1>Video Item</h1>
-        </div>
-    );
+// using props destucturing
+const VideoItem = ({ video }) => {
+    return <h1>{video.snippet.title}</h1>;
 };
 
 export default VideoItem;
