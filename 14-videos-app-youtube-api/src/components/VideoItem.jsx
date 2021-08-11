@@ -1,8 +1,21 @@
 import React from "react";
+import "./VideoItem.css";
 
 // using props destucturing
 const VideoItem = ({ video }) => {
-    return <h1>{video.snippet.title}</h1>;
+    return (
+        <div className="item video-item">
+            <img
+                className="ui image"
+                src={video.snippet.thumbnails.medium.url}
+                alt={video.snippet.title}
+            />
+            <div className="content">
+                <div className="header">{video.snippet.title}</div>
+                {/* <div className="description">{video.snippet.description}</div> */}
+            </div>
+        </div>
+    );
 };
 
 export default VideoItem;
