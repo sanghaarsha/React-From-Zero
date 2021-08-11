@@ -2,9 +2,13 @@ import React from "react";
 import "./VideoItem.css";
 
 // using props destucturing
-const VideoItem = ({ video }) => {
+const VideoItem = ({ video, onVideoSelect }) => {
+    const onItemClick = () => {
+        onVideoSelect(video);
+    };
+
     return (
-        <div className="item video-item">
+        <div className="item video-item" onClick={onItemClick}>
             <img
                 className="ui image"
                 src={video.snippet.thumbnails.medium.url}
@@ -12,7 +16,9 @@ const VideoItem = ({ video }) => {
             />
             <div className="content">
                 <div className="header">{video.snippet.title}</div>
-                {/* <div className="description">{video.snippet.description}</div> */}
+                <div className="description channel-name">
+                    {video.snippet.channelTitle}
+                </div>
             </div>
         </div>
     );
