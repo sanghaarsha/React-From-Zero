@@ -1,21 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const url =
-    "https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=javascript";
-
 const Search = () => {
-    const [term, setTerm] = useState("");
+    const [term, setTerm] = useState("hello world");
+    const [results, setResults] = useState([]);
 
     const onTermChange = (e) => {
         setTerm(e.target.value);
     };
 
-    console.log("I run with every render");
-
+    // runs only when term is changed
     useEffect(() => {
-        console.log("I only run ONCE!!");
-    }, []);
+        // immediately declaring and invoking function
+        (async () => {
+            const { data } = await axios.get(
+                "https://en.wikipedia.org/w/api.php",
+                {
+                    params: {
+                        action: "query",
+                        list: "search",
+                        format: "json",
+                        origin: "*",
+                        srsearch: term,
+                    },
+                }
+            );
+            setResults(data.query.search);
+        })();
+    }, [term]);
+
+    const renderedResults = results.map((item) => {
+        return (
+            <div className="item" key={item.pageid}>
+                <div className="content">
+                    <div className="header">{item.title}</div>
+                    {item.snippet}
+                </div>
+            </div>
+        );
+    });
 
     return (
         <div>
@@ -28,9 +51,8 @@ const Search = () => {
                         onChange={onTermChange}
                     />
                 </div>
-
-                <h1>{term}</h1>
             </div>
+            <div className="ui celled list">{renderedResults}</div>
         </div>
     );
 };
