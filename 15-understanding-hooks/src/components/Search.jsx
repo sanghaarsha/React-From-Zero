@@ -12,7 +12,7 @@ const Search = () => {
     // runs only when term is changed
     useEffect(() => {
         // immediately declaring and invoking function
-        (async () => {
+        const search = async () => {
             const { data } = await axios.get(
                 "https://en.wikipedia.org/w/api.php",
                 {
@@ -26,15 +26,30 @@ const Search = () => {
                 }
             );
             setResults(data.query.search);
-        })();
+        };
+        // search only if there is term
+        if (term) {
+            search();
+        }
     }, [term]);
 
     const renderedResults = results.map((item) => {
         return (
             <div className="item" key={item.pageid}>
+                <div className="right floated content">
+                    <a
+                        className="ui button"
+                        href={`https://en.wikipedia.org?curid=${item.pageid}`}
+                    >
+                        Go
+                    </a>
+                </div>
                 <div className="content">
                     <div className="header">{item.title}</div>
-                    {item.snippet}
+                    {/* ! DANGER : CAN INTRODUCE XSS */}
+                    <span
+                        dangerouslySetInnerHTML={{ __html: item.snippet }}
+                    ></span>
                 </div>
             </div>
         );
