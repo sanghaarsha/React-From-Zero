@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+let n = 0;
 const Search = () => {
     const [term, setTerm] = useState("hello world");
     const [results, setResults] = useState([]);
@@ -27,9 +27,25 @@ const Search = () => {
             );
             setResults(data.query.search);
         };
-        // search only if there is term
-        if (term) {
+
+        // skip throttling for first render
+        if (term && !results.length) {
             search();
+        } else {
+            // throttling API for every other render
+            const timeoutId = setTimeout(() => {
+                // search only if there is term
+                if (term) {
+                    search();
+                }
+            }, 1000);
+
+            // as useEffect only runs when the term is changed
+            // this will clear timeout of every other request
+            // than last request
+            return () => {
+                clearTimeout(timeoutId);
+            };
         }
     }, [term]);
 
@@ -86,14 +102,31 @@ export default Search;
 // * 3. first time rendering and (whenever it re-renders and when some piece of data is changed)
 
 // ? syntax
-// useEffect(() => {
-//     console.log("hey hey it's executed!");
-// }, []);
+//! useEffect(() => {
+//!     console.log("hey hey it's executed!");
+//! }, []);
 // * first argument is a function that executes when it matches criteria provided by second criteria
 //* second criteria can be nothing, empty array or array with some parameters
 
 // ? meaning of second arguments
-//    []   : Run at inital render
-// nothing : Run at initial render -> run after every re-render
-// [data]  : Run at inital render -> Run after every re-render 'if'
-//           data has changed since last render
+//*    []   : Run at inital render
+//* nothing : Run at initial render -> run after every re-render
+//* [data]  : Run at inital render -> Run after every re-render 'if'
+//*           data has changed since last render
+
+// ? Clean-Up Functions
+//* At first render, overall useEffect function runs,
+//* then, react holds clean up for next function call
+//* After first render, whenever useEffect is called
+//* process reverses, first clean up runs then other
+//* functions run.
+//! useEffect(() => {
+//!     effect_functions(){
+//!      console.log("Effect Functions!")
+//! }
+//!     return () => {
+//!         cleanup_funtion(){
+//!              console.log("Cleanup Functions!");
+//! }
+//!     }
+//! }, [inputs])
