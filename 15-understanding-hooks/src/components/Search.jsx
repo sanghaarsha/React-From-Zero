@@ -2,15 +2,30 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 const Search = () => {
     const [term, setTerm] = useState("hello world");
+    // solving err : "useEffect has a missing dependency" by using debounced term
+    const [debouncedTerm, setDebouncedTerm] = useState(term);
     const [results, setResults] = useState([]);
 
     const onTermChange = (e) => {
         setTerm(e.target.value);
     };
 
-    // runs only when term is changed
+    // V2 : Implementation with bugfix
+    // updating 'debouncedTerm' every 1000ms 'term' changes
     useEffect(() => {
-        // immediately declaring and invoking function
+        // update debouncedTerm every 1s after change in term
+        const timerId = setTimeout(() => {
+            setDebouncedTerm(term);
+        }, 1000);
+        // clear timer if change of term is within 1000ms
+        return () => {
+            clearTimeout(timerId);
+        };
+        // run if change in term
+    }, [term]);
+
+    // when debounceTerm changes :
+    useEffect(() => {
         const search = async () => {
             const { data } = await axios.get(
                 "https://en.wikipedia.org/w/api.php",
@@ -20,33 +35,57 @@ const Search = () => {
                         list: "search",
                         format: "json",
                         origin: "*",
-                        srsearch: term,
+                        srsearch: debouncedTerm,
                     },
                 }
             );
             setResults(data.query.search);
         };
 
-        // skip throttling for first render
-        if (term && !results.length) {
-            search();
-        } else {
-            // throttling API for every other render
-            const timeoutId = setTimeout(() => {
-                // search only if there is term
-                if (term) {
-                    search();
-                }
-            }, 1000);
+        search();
 
-            // as useEffect only runs when the term is changed
-            // this will clear timeout of every other request
-            // than last request
-            return () => {
-                clearTimeout(timeoutId);
-            };
-        }
-    }, [term]);
+        return () => {};
+    }, [debouncedTerm]);
+
+    // V1 : Implementation w. bug
+    // runs when term is changed
+    // useEffect(() => {
+    //     const search = async () => {
+    //         const { data } = await axios.get(
+    //             "https://en.wikipedia.org/w/api.php",
+    //             {
+    //                 params: {
+    //                     action: "query",
+    //                     list: "search",
+    //                     format: "json",
+    //                     origin: "*",
+    //                     srsearch: term,
+    //                 },
+    //             }
+    //         );
+    //         setResults(data.query.search);
+    //     };
+
+    //     // skip throttling for first render
+    //     if (term && !results.length) {
+    //         search();
+    //     } else {
+    //         // throttling API for every other render
+    //         const timeoutId = setTimeout(() => {
+    //             // search only if there is term
+    //             if (term) {
+    //                 search();
+    //             }
+    //         }, 1000);
+
+    //         // as useEffect only runs when the term is changed
+    //         // this will clear timeout of every other request
+    //         // than last request
+    //         return () => {
+    //             clearTimeout(timeoutId);
+    //         };
+    //     }
+    // }, [term]);
 
     const renderedResults = results.map((item) => {
         return (
@@ -71,7 +110,7 @@ const Search = () => {
     });
 
     return (
-        <div>
+        <div className="ui container">
             <div className="ui form">
                 <div className="field">
                     <label htmlFor="search-term">Enter Search Term</label>
