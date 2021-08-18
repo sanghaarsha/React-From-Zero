@@ -40,8 +40,18 @@ const App = () => {
 
     return (
         <div className="ui container">
-            {/* <Accordion items={items} />
+            <hr />
+            {/* Accordion Widget */}
+            <Accordion items={items} />
+            <hr />
+
+            {/* Wikipedia Search Widget */}
+            <hr />
             <Search />
+            <hr />
+
+            {/* Dropdown Widget */}
+            <hr />
             <button
                 onClick={() => {
                     setShowDropdown(!showDropdown);
@@ -57,8 +67,13 @@ const App = () => {
                     onSelectionChange={setSelectedColor}
                     dropdownLabel={"Select A Color"}
                 />
-            ) : null} */}
+            ) : null}
+            <hr />
+
+            {/* Translate Widget */}
+            <hr />
             <Translate />
+            <hr />
         </div>
     );
 };
