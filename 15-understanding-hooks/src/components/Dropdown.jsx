@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const Dropdown = ({ options, selected, onSelectionChange }) => {
+const Dropdown = ({ options, selected, onSelectionChange, dropdownLabel }) => {
     const [isActive, setIsActive] = useState(false);
 
     // useRef : reference to direct DOM element
@@ -17,7 +17,7 @@ const Dropdown = ({ options, selected, onSelectionChange }) => {
 
         document.body.addEventListener("click", onBodyClick);
 
-        // when dropdown is toggeled off event listener is removed 
+        // when dropdown is toggeled off event listener is removed
         return () => {
             document.body.removeEventListener("click", onBodyClick);
         };
@@ -42,12 +42,10 @@ const Dropdown = ({ options, selected, onSelectionChange }) => {
         );
     });
 
-    console.log(ref.current);
-
     return (
-        <div className="ui form container" ref={ref}>
+        <div className="ui form" ref={ref}>
             <div className="field">
-                <label className="label">Select A Color</label>
+                <label className="label">{dropdownLabel}</label>
                 <div
                     onClick={() => {
                         setIsActive(!isActive);
