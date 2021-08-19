@@ -36,7 +36,6 @@ const Convert = ({ text, language }) => {
                     },
                 }
             );
-            console.log(data);
             setTranslated(data.translations[0].translatedText);
         };
 

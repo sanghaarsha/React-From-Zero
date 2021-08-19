@@ -11,7 +11,7 @@ const items = [
     },
     {
         title: "Why use react?",
-        content: "React is a fovorite JS library among engineers",
+        content: "React is a favorite JS library among engineers",
     },
     {
         title: "How do you use react?",
@@ -38,42 +38,57 @@ const App = () => {
     const [selectedColor, setSelectedColor] = useState(options[0]);
     const [showDropdown, setShowDropdown] = useState(true);
 
+    const navAccordion = () => {
+        if (window.location.pathname === "/") {
+            return <Accordion items={items} />;
+        }
+        return null;
+    };
+
+    const navSearch = () => {
+        if (window.location.pathname === "/search") {
+            return <Search />;
+        }
+        return null;
+    };
+
+    const navDropdown = () => {
+        if (window.location.pathname === "/dropdown") {
+            return (
+                <React.Fragment>
+                    <button
+                        onClick={() => {
+                            setShowDropdown(!showDropdown);
+                        }}
+                    >
+                        Toggle Dropdown!
+                    </button>
+                    {showDropdown ? (
+                        <Dropdown
+                            options={options}
+                            selected={selectedColor}
+                            onSelectionChange={setSelectedColor}
+                            dropdownLabel={"Select A Color"}
+                        />
+                    ) : null}
+                </React.Fragment>
+            );
+        }
+        return null;
+    };
+
+    const navTranslate = () => {
+        if (window.location.pathname === "/translate") {
+            return <Search />;
+        }
+        return null;
+    };
     return (
         <div className="ui container">
-            <hr />
-            {/* Accordion Widget */}
-            <Accordion items={items} />
-            <hr />
-
-            {/* Wikipedia Search Widget */}
-            <hr />
-            <Search />
-            <hr />
-
-            {/* Dropdown Widget */}
-            <hr />
-            <button
-                onClick={() => {
-                    setShowDropdown(!showDropdown);
-                }}
-            >
-                Toogle Dropdown!
-            </button>
-
-            {showDropdown ? (
-                <Dropdown
-                    options={options}
-                    selected={selectedColor}
-                    onSelectionChange={setSelectedColor}
-                    dropdownLabel={"Select A Color"}
-                />
-            ) : null}
-            <hr />
-
-            {/* Translate Widget */}
-            <hr />
-            <Translate />
-            <hr />
+            {navAccordion()}
+            {navSearch()}
+            {navDropdown()}
+            {navTranslate()}
         </div>
     );
 };

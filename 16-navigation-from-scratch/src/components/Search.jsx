@@ -110,7 +110,7 @@ const Search = () => {
     });
 
     return (
-        <div className="ui container">
+        <div>
             <div className="ui form">
                 <div className="field">
                     <label htmlFor="search-term">Enter Search Term</label>
