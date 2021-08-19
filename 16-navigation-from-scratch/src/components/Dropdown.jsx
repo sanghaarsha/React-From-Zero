@@ -3,28 +3,23 @@ import React, { useState, useEffect, useRef } from "react";
 const Dropdown = ({ options, selected, onSelectionChange, dropdownLabel }) => {
     const [isActive, setIsActive] = useState(false);
 
-    // useRef : reference to direct DOM element
     const ref = useRef();
     useEffect(() => {
         const onBodyClick = (event) => {
-            //  if the element is inside 'ref', do nothing
             if (ref.current && ref.current.contains(event.target)) {
                 return;
             }
-            // else close dropdown
             setIsActive(false);
         };
 
         document.body.addEventListener("click", onBodyClick);
 
-        // when dropdown is toggeled off event listener is removed
         return () => {
             document.body.removeEventListener("click", onBodyClick);
         };
     }, []);
 
     const renderedOptions = options.map((item, index) => {
-        // not showing selected value as option
         if (item.value === selected.value) {
             return null;
         }
@@ -70,7 +65,3 @@ const Dropdown = ({ options, selected, onSelectionChange, dropdownLabel }) => {
 };
 
 export default Dropdown;
-
-// Built-in event system only allows events to be
-// registered inside the components direcly created by it
-// eg. Dropdown cannot put event hanlder in body

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-// API_KEY = AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM
-// https://translation.googleapis.com/language/translate/v2
-
 const Convert = ({ text, language }) => {
     const [translated, setTranslated] = useState("");
     const [debouncedText, setDebouncedText] = useState(text);
