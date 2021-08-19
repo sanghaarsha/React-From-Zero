@@ -3,6 +3,7 @@ import Accordion from "./components/Accordion";
 import Search from "./components/Search";
 import Dropdown from "./components/Dropdown";
 import Translate from "./components/Translate";
+import Route from "./components/Route";
 
 const items = [
     {
@@ -38,23 +39,21 @@ const App = () => {
     const [selectedColor, setSelectedColor] = useState(options[0]);
     const [showDropdown, setShowDropdown] = useState(true);
 
-    const navAccordion = () => {
-        if (window.location.pathname === "/") {
-            return <Accordion items={items} />;
-        }
-        return null;
-    };
+    return (
+        <div className="ui container">
+            <Route path="/">
+                <Accordion items={items} />
+            </Route>
 
-    const navSearch = () => {
-        if (window.location.pathname === "/search") {
-            return <Search />;
-        }
-        return null;
-    };
+            <Route path="/search">
+                <Search />
+            </Route>
 
-    const navDropdown = () => {
-        if (window.location.pathname === "/dropdown") {
-            return (
+            <Route path="/translate">
+                <Translate />
+            </Route>
+
+            <Route path="/dropdown">
                 <React.Fragment>
                     <button
                         onClick={() => {
@@ -72,23 +71,7 @@ const App = () => {
                         />
                     ) : null}
                 </React.Fragment>
-            );
-        }
-        return null;
-    };
-
-    const navTranslate = () => {
-        if (window.location.pathname === "/translate") {
-            return <Translate />;
-        }
-        return null;
-    };
-    return (
-        <div className="ui container">
-            {navAccordion()}
-            {navSearch()}
-            {navDropdown()}
-            {navTranslate()}
+            </Route>
         </div>
     );
 };
