@@ -79,7 +79,7 @@ const App = () => {
 
     const navTranslate = () => {
         if (window.location.pathname === "/translate") {
-            return <Search />;
+            return <Translate />;
         }
         return null;
     };
